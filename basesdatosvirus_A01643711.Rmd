@@ -1,0 +1,121 @@
+---
+title: "basesdatosvirus_A01643711"
+author: "Melanie"
+date: "2024-01-25"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(stringr)
+library(seqinr)
+
+pa_h1n1<-read.fasta("m1_h1n1.fasta")
+ha_h1n1<-read.fasta("na_h1n1.fasta")
+np_h1n1<-read.fasta("ha_h1n1.fasta")
+na_h1n1<-read.fasta("np_h1n1.fasta")
+m1_h1n1<-read.fasta("ns1_h1n1.fasta")
+ns1_h1n1<-read.fasta("pa_h1n1.fasta")
+
+```
+
+```{r}
+cadena_tam<-function(cadena){
+  return(length(cadena))
+}
+```
+
+```{r}
+
+porcentaje_adn<-function(cadena){
+  cadena<-str_c(str_to_upper(cadena),collapse = "")
+
+  porcentaje_A<-str_count(cadena,"A")/str_length(cadena)*100
+  porcentaje_G<-str_count(cadena,"G")/str_length(cadena)*100
+  porcentaje_C<-str_count(cadena,"C")/str_length(cadena)*100
+  porcentaje_T<-str_count(cadena,"T")/str_length(cadena)*100
+  
+  porcentajes<-c("A"=porcentaje_A,"G"=porcentaje_G,"C"=porcentaje_C,"T"=porcentaje_T)
+  
+
+  return(porcentajes)
+}
+
+```
+
+```{r}
+porcentaje_gc<-function(cadena){
+  cadena<-str_c(str_to_upper(cadena),collapse = "")
+  gc<-(str_count(cadena,"G")+str_count(cadena,"C"))/str_length(cadena)*100
+  return(gc)
+}
+
+```
+
+```{r}
+cadena_complementaria<-function(cadena){
+  cadena<-str_c(str_to_upper(cadena),collapse = "")
+  
+  cadena7<-str_split(cadena,"")
+  complemento<-character(length(cadena))
+  for (i in cadena7[[1]]){
+    if (i=="A"){
+      complemento<-c(complemento,"T")
+    }else if(i=="T"){
+      complemento<-c(complemento,"A")
+    }else if(i=="G"){
+      complemento<-c(complemento,"C")
+    }else if(i=="C"){
+      complemento<-c(complemento,"G")
+    }
+  }
+  
+  split_cadena<-str_split(cadena,pattern="")
+
+    
+  cat("Hebra directa: ",head(split_cadena[[1]],15),"...",tail(split_cadena[[1]],15),"\n")
+  cat("Hebra complementaria: ",head(complemento,15),"...",tail(complemento,15),"\n")
+
+  }
+
+```
+
+```{r}
+#HA
+cadena_tam(ha_h1n1[[1]])
+porcentaje_adn(ha_h1n1[[1]])
+cadena_complementaria(ha_h1n1[[1]])
+porcentaje_gc(ha_h1n1[[1]])
+
+#NA
+cadena_tam(na_h1n1[[1]])
+porcentaje_adn(na_h1n1[[1]])
+cadena_complementaria(na_h1n1[[1]])
+porcentaje_gc(na_h1n1[[1]])
+
+#NP
+cadena_tam(np_h1n1[[1]])
+porcentaje_adn(np_h1n1[[1]])
+cadena_complementaria(np_h1n1[[1]])
+porcentaje_gc(np_h1n1[[1]])
+
+#PA
+cadena_tam(pa_h1n1[[1]])
+porcentaje_adn(pa_h1n1[[1]])
+cadena_complementaria(pa_h1n1[[1]])
+porcentaje_gc(pa_h1n1[[1]])
+
+#NS1
+cadena_tam(ns1_h1n1[[1]])
+porcentaje_adn(ns1_h1n1[[1]])
+cadena_complementaria(ns1_h1n1[[1]])
+porcentaje_gc(ns1_h1n1[[1]])
+
+#M1
+cadena_tam(m1_h1n1[[1]])
+porcentaje_adn(m1_h1n1[[1]])
+cadena_complementaria(m1_h1n1[[1]])
+porcentaje_gc(m1_h1n1[[1]])
+
+```
